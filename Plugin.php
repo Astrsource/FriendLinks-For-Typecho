@@ -1,6 +1,7 @@
 <?php
 /**
- * 友情链接插件 - 自动抓取网站信息版
+ * 友情链接插件 - 自动抓取网站信息版<br>
+ * 启用后在[管理]-[友情链接]管理友情链接
  *
  * @package FriendLinks
  * @author Astrsource
