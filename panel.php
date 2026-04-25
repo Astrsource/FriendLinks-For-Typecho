@@ -85,7 +85,6 @@ include 'header.php';
 include 'menu.php';
 ?>
 <style>
-    /* 省去重复样式，实际使用中保留原完整样式 */
     .friendlinks-panel { padding: 20px; }
     .friendlinks-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
     .friendlinks-table th, .friendlinks-table td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
@@ -222,14 +221,19 @@ include 'menu.php';
 
     <div class="cron-info">
         <h3>📌 使用说明</h3>
+        <p>可选参数说明：</p>
+        <p><span style="color: red;">container_class</span>：自定义容器类名 </p>
+        <p>与全局卡片模板的关系：全局模板中的 <span style="color: red;">.friendlink-card</span> 是基类，<span style="color: red;">card_class</span> 会追加到 class 属性中，即最终输出为 <span style="color: red;">class="friendlink-card my-card"</span></p>
         <h4>1. 在文章/页面中插入友情链接</h4>
-        <span style="color: red">card_class自定义参数，是通过锚定.friendlink-card类输出！</span>
         <p>短代码示例：</p>
         <pre>[friendlinks]</pre>
         <p>带参数：</p>
         <pre>[friendlinks container_class="my-links" card_class="my-card"]</pre>
         <h4>2. 在模板中调用</h4>
+        <p>在主题模板文件中使用以下代码：</p>
         <pre>&lt;?php FriendLinks_Plugin::output(); ?&gt;</pre>
+        <p>或带参数：</p>
+        <pre>&lt;?php FriendLinks_Plugin::output('my-container', 'my-card'); ?&gt;</pre>
         <h4>3. 定时任务</h4>
         <p>Cron URL：</p>
         <pre><?php echo htmlspecialchars($cronUrl); ?></pre>

@@ -55,13 +55,13 @@ class FriendLinks_Plugin implements PluginInterface
     public static function config(Form $form)
     {
         // 缓存时间
-        $cacheTime = new \Typecho\Widget\Helper\Form\Element\Text('cacheTime', null, '604800', _t('缓存时间（秒）'), _t('默认7天'));
+        $cacheTime = new \Typecho\Widget\Helper\Form\Element\Text('cacheTime', null, '604800', _t('缓存时间（秒）'),  _t('缓存时间单位为秒，默认时间是 7 天'));
         $form->addInput($cacheTime);
         // 请求超时
-        $timeout = new \Typecho\Widget\Helper\Form\Element\Text('timeout', null, '10', _t('请求超时（秒）'));
+        $timeout = new \Typecho\Widget\Helper\Form\Element\Text('timeout', null, '10', _t('请求超时（秒）'), _t('请求超时时间单位为秒，默认时间是 10 秒'));
         $form->addInput($timeout);
         // 默认图标
-        $defaultIcon = new \Typecho\Widget\Helper\Form\Element\Text('defaultIcon', null, '/favicon.png', _t('默认图标 URL'));
+        $defaultIcon = new \Typecho\Widget\Helper\Form\Element\Text('defaultIcon', null, '/favicon.png', _t('默认图标 URL'), _t('当无法获取到网站图标时显示的默认图标地址，留空则不显示'));
         $form->addInput($defaultIcon);
         // 卡片模板
         $template = new \Typecho\Widget\Helper\Form\Element\Textarea('template', null,
@@ -84,7 +84,7 @@ class FriendLinks_Plugin implements PluginInterface
 <span>{last_update}/{alive}</span>
 </div>
 </div>',
-            _t('卡片模板'), _t('占位符：{url}、{title}、{description}、{icon}、{last_update}、{alive}'));
+            _t('卡片模板'), _t('占位符：{url}、{title}、{description}、{icon}、{last_update}、{alive}<br>注意：自定义模板中的 <span style="color: red;margin-right: 0px;">.friendlink-card</span> 是基类，使用 <span style="color: red;margin-right: 0px;">card_class</span> 参数输出会追加到 class 属性中，即最终输出为 <span style="color: red;margin-right: 0px;">class="friendlink-card my-card"</span>'));
         $form->addInput($template);
         // 自定义CSS
         $customCss = new \Typecho\Widget\Helper\Form\Element\Textarea('customCss', null, '.friendlink-card {
@@ -153,7 +153,7 @@ class FriendLinks_Plugin implements PluginInterface
             border-radius: 8px;
             margin-top: 12px;
             word-break: break-all;
-        }', _t('自定义 CSS'));
+        }', _t('自定义 CSS'), _t('自定义友情链接卡片的 CSS 样式'));
         $form->addInput($customCss);
         // 排序方式
         $sortOrder = new \Typecho\Widget\Helper\Form\Element\Select('sortOrder', [
@@ -163,22 +163,22 @@ class FriendLinks_Plugin implements PluginInterface
             'title_asc' => _t('标题 A→Z'),
             'title_desc' => _t('标题 Z→A'),
             'random' => _t('随机')
-        ], 'manual', _t('前台排序方式'));
+        ], 'manual', _t('前台排序方式'), _t('选择友情链接在前台页面中的显示顺序<br>注意：若开启“允许访客选择排序”选项，此设置将被覆盖'));
         $form->addInput($sortOrder);
         // 允许访客排序
-        $allowVisitorSort = new \Typecho\Widget\Helper\Form\Element\Radio('allowVisitorSort', ['0' => _t('关闭'), '1' => _t('开启')], '0', _t('允许访客选择排序'));
+        $allowVisitorSort = new \Typecho\Widget\Helper\Form\Element\Radio('allowVisitorSort', ['0' => _t('关闭'), '1' => _t('开启')], '0', _t('允许访客选择排序'), _t('开启后，前台将显示排序下拉框，访客可切换排序方式，偏好会记录在浏览器中<br>注意：访客在不同设备上访问时，排序偏好会不同'));
         $form->addInput($allowVisitorSort);
         // 跳过异常网站
-        $skipDeadLinks = new \Typecho\Widget\Helper\Form\Element\Radio('skipDeadLinks', ['0' => _t('不跳过'), '1' => _t('跳过')], '0', _t('跳过异常网站'));
+        $skipDeadLinks = new \Typecho\Widget\Helper\Form\Element\Radio('skipDeadLinks', ['0' => _t('不跳过'), '1' => _t('跳过')], '0', _t('跳过异常网站'), _t('前台渲染时，是否跳过存活状态为异常的网站（即不显示已失效的链接）'));
         $form->addInput($skipDeadLinks);
         // Cron密钥
-        $secretKey = new \Typecho\Widget\Helper\Form\Element\Text('secretKey', null, '', _t('Cron 密钥'));
+        $secretKey = new \Typecho\Widget\Helper\Form\Element\Text('secretKey', null, '', _t('Cron 密钥'), _t('设置服务器 Cron 定时访问时的密钥，用于验证请求来源，默认值为空，不开启'));
         $form->addInput($secretKey);
         // 禁用时删除数据表
         $dropTable = new \Typecho\Widget\Helper\Form\Element\Radio('dropTableOnDeactivate', [
             '0' => _t('不删除'),
             '1' => _t('<span style="color: red;font-weight: bold;">删除</span>')
-        ], '0', _t('禁用插件时删除数据表'));
+        ], '0', _t('禁用插件时删除数据表'), _t('<span style="color: red;font-weight: bold;">注意：若选择删除，禁用插件后所有友情链接数据将被永久删除，请谨慎操作</span>'));
         $form->addInput($dropTable);
     }
 

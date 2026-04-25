@@ -24,7 +24,6 @@ class FriendLinks_Action extends Widget
         }
 
         $updated = FriendLinks_Plugin::updateAllLinksInfo();
-        // 注意：updateAllLinksInfo 内部已调用 refreshCache，此处无需重复
 
         $this->response->throwJson([
             'success' => true,
@@ -50,7 +49,6 @@ class FriendLinks_Action extends Widget
         }
 
         $updated = FriendLinks_Plugin::updateAllLinksInfo();
-        // 内部已刷新缓存
 
         echo sprintf("OK: Updated %d links at %s", $updated, date('Y-m-d H:i:s'));
     }
