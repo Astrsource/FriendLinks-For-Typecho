@@ -80,7 +80,6 @@ $maxSort = 0;
 foreach ($links as $link) if ($link['sort'] > $maxSort) $maxSort = $link['sort'];
 $nextSort = $maxSort + 1;
 
-Typecho_Plugin::factory('admin/header.php')->header = ["NavMenu_Plugin", "header_scripts"];
 include 'header.php';
 include 'menu.php';
 ?>

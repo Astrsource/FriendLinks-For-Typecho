@@ -29,7 +29,6 @@ class FriendLinks_Plugin implements PluginInterface
         self::createTable();
         if (!is_dir(self::CACHE_DIR)) mkdir(self::CACHE_DIR, 0755, true);
         Helper::addPanel(3, 'FriendLinks/panel.php', _t('友情链接'), _t('管理友情链接'), 'administrator');
-        Helper::addAction('FriendLinks-edit', 'FriendLinks_Edit');
         Helper::addAction('friendlinks-update', 'FriendLinks_Action');
         Helper::addRoute('friendlinks_cron', '/friendlinks/cron', 'FriendLinks_Action', 'cron');
         \Typecho\Plugin::factory('Widget\Abstract\Contents')->contentEx = ['FriendLinks_Plugin', 'parseShortcode'];
