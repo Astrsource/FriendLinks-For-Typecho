@@ -352,7 +352,7 @@ include 'menu.php';
             <span style="color: red;">container_class</span>：自定义容器类名<br>
             <span style="color: red;">category_id</span>：按分类ID过滤链接<br>
             <span style="color: red;">include_uncategorized</span>：是否包含未分类链接（"0"或"false"排除）<br>
-            <span style="color: red;">include_dead</span>：是否包含存活异常的链接（"1"或"true"包含）
+            <span style="color: red;">include_dead</span>：是否包含存活异常的链接（全局设置："0"、包含："1"、仅输出："2"）
         </p>
         <h4>1. 短代码示例</h4>
         <pre>[friendlinks]</pre>
