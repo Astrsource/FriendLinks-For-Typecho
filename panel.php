@@ -615,7 +615,10 @@ FriendLinks_Plugin::output('friendlinks-container', '', 1);
         if (btn) { btn.disabled = true; btn.textContent = '处理中...'; }
 
         fetch(window.location.href, { method: 'POST', body: data })
-            .then(r => r.text())
+            .then(r => {
+                if (!r.ok) throw new Error('服务器错误: ' + r.status);
+                return r.text();
+            })
             .then(html => { location.reload(); })
             .catch(e => alert('操作失败：' + e))
             .finally(() => {

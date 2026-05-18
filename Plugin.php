@@ -1073,7 +1073,7 @@ public static function fetchMultiSiteInfo(array $urls)
                     CURLOPT_RETURNTRANSFER => true
                 ]);
                 curl_multi_add_handle($mh2, $ch);
-                $probeHandles[(int)$ch] = ['index' => $k, 'url' => $probeUrl];
+                $probeHandles[] = ['ch' => $ch, 'index' => $k, 'url' => $probeUrl];
             }
         }
 
@@ -1083,26 +1083,25 @@ public static function fetchMultiSiteInfo(array $urls)
         } while ($active);
 
         $foundIcons = [];
-        foreach ($probeHandles as $chId => $info) {
-            $k = $info['index'];
-            if (isset($foundIcons[$k])) {
-                curl_multi_remove_handle($mh2, curl_multi_get_handle_by_id($mh2, $chId));
-                continue;
+        foreach ($probeHandles as $probeInfo) {
+            $ch = $probeInfo['ch'];
+            $k = $probeInfo['index'];
+            
+            if (!isset($foundIcons[$k])) {
+                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                if ($httpCode >= 200 && $httpCode < 400) {
+                    $foundIcons[$k] = $probeInfo['url'];
+                }
             }
-            $httpCode = curl_getinfo(curl_multi_get_handle_by_id($mh2, $chId), CURLINFO_HTTP_CODE);
-            if ($httpCode >= 200 && $httpCode < 400) {
-                $foundIcons[$k] = $info['url'];
-            }
+            
+            curl_multi_remove_handle($mh2, $ch);
+            curl_close($ch);
         }
+        curl_multi_close($mh2);
 
         foreach ($foundIcons as $k => $iconUrl) {
             $results[$k]['icon'] = $iconUrl;
         }
-
-        foreach ($probeHandles as $chId => $info) {
-            curl_multi_remove_handle($mh2, curl_multi_get_handle_by_id($mh2, $chId));
-        }
-        curl_multi_close($mh2);
     }
 
     return $results;
